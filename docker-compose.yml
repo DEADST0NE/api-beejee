@@ -1,0 +1,24 @@
+version: '3.9'
+
+services:
+  pg:
+    container_name: beejee-pg
+    image: postgres:latest
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - beejee
+    environment:
+      - POSTGRES_USER=${APP_DB_USER}
+      - POSTGRES_PASSWORD=${APP_DB_PASSWORD}
+      - POSTGRES_DB=${APP_DB_DATABASE}
+
+
+volumes:
+  db-data:
+
+networks:
+  beejee:
