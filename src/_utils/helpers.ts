@@ -19,13 +19,15 @@ export const getMiliSeconds = (str: string): number => {
   return miliSeconds;
 };
 
-export function deepSearch(arr: any[], item: string) {
-  for (let i = 0; i < arr.length; i++) {
-    if (Array.isArray(arr[i]) && deepSearch(arr[i], item)) {
-      return true;
-    } else if (arr[i] === item) {
-      return true;
-    }
-  }
-  return false;
-}
+export const stripTags = (input: string, allowed?: string) => {
+  if (!input) return input;
+
+  allowed = (
+    ((allowed || '') + '').toLowerCase().match(/<[a-z][a-z0-9]*>/g) || []
+  ).join('');
+  const tags = /<\/?([a-z][a-z0-9]*)\b[^>]*>/gi;
+  const commentsAndPhpTags = /<!--[\s\S]*?-->|<\?(?:php)?[\s\S]*?\?>/gi;
+  return input.replace(commentsAndPhpTags, '').replace(tags, function ($0, $1) {
+    return allowed.indexOf('<' + $1.toLowerCase() + '>') > -1 ? $0 : '';
+  });
+};

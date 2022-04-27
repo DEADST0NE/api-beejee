@@ -8,6 +8,7 @@ import {
   Post,
   Get,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 
 import { TasksService } from './tasks.service';
@@ -21,6 +22,7 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { EditTaskDto } from './dto/edit-task.dto';
 import { DeleteTaskDto } from './dto/delete-task.dto';
 import { FindTaskDto } from './dto/find-task.dto';
+import { TasksDto } from './dto/list-task.dto';
 
 @Controller('tasks')
 export class TasksController {
@@ -75,9 +77,9 @@ export class TasksController {
   }
 
   @Get()
-  async list() {
+  async list(@Query() query: TasksDto) {
     try {
-      const result = await this.tasksService.list();
+      const result = await this.tasksService.list(query);
       return result;
     } catch (err) {
       throw new Exception(
